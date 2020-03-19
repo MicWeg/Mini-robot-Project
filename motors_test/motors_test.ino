@@ -1,13 +1,13 @@
 //Define which pins to use for Motors
 //First Motor
-int on_first = ;
-int FMotor_Forward = ;
-int FMotor_Backward = ;
+#define on_first 
+#define FMotor_Forward 
+#define FMotor_Backward 
 
 //Second Motor
-int on_second = ;
-int SMotor_Forward = ;
-int SMotor_Backward = ;
+#define on_second 
+#define SMotor_Forward 
+#define SMotor_Backward 
 
 void setup() {
 //Set the baud rate for serial data transmission  
