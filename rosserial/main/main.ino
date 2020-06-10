@@ -2,6 +2,7 @@
 #include <ros/time.h>
 #include <sensor_msgs/Range.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Float64.h>
 
 //Define which pins to use for sensor
 #define Trigger 2
@@ -23,8 +24,13 @@ ros::NodeHandle  nh;
 
 sensor_msgs::Range range_msg;
 std_msgs::String str_msg;
+std_msgs::Float64 left_wheel;
+std_msgs::Float64 right_wheel;
+
 ros::Publisher pub_range( "/ultrasound", &range_msg);
 ros::Publisher pub_str("/move", &str_msg);
+ros::Publisher pub_lw("/mybot/leftWheel_effort_controller/command", &left_wheel);
+ros::Publisher pub_rw("/mybot/rightWheel_effort_controller/command", &right_wheel);
 
 char frameid[] = "/ultrasound";
 
@@ -89,6 +95,11 @@ void move(int distance){
     str_msg.data = "Backward";
     pub_str.publish(&str_msg);
 
+    left_wheel.data = -7.0;
+    right_wheel.data = -7.0;
+    pub_lw.publish(&left_wheel);
+    pub_rw.publish(&right_wheel);
+
     delay(500);
 
     //Move right or left depending on pseudo-random number generator
@@ -102,6 +113,11 @@ void move(int distance){
 
       str_msg.data = "Right";
       pub_str.publish(&str_msg);
+
+      left_wheel.data = 0.0;
+      right_wheel.data = 7.0;
+      pub_lw.publish(&left_wheel);
+      pub_rw.publish(&right_wheel);
     }
     else{
       
@@ -113,6 +129,11 @@ void move(int distance){
 
       str_msg.data = "Left";
       pub_str.publish(&str_msg);
+
+      left_wheel.data = 7.0;
+      right_wheel.data = 0.0;
+      pub_lw.publish(&left_wheel);
+      pub_rw.publish(&right_wheel);
 
     }
     delay(1000);
@@ -129,7 +150,11 @@ void move(int distance){
 
   str_msg.data = "Forward";
   pub_str.publish(&str_msg);
-
+  
+  left_wheel.data = 7.0;
+  right_wheel.data = 7.0;
+  pub_lw.publish(&left_wheel);
+  pub_rw.publish(&right_wheel);
   delay(50);
 }
 
@@ -149,6 +174,8 @@ void setup(){
   nh.initNode();
   nh.advertise(pub_range);
   nh.advertise(pub_str);
+  nh.advertise(pub_lw);
+  nh.advertise(pub_rw);
    
   range_msg.radiation_type = sensor_msgs::Range::ULTRASOUND;
   range_msg.header.frame_id =  frameid;
