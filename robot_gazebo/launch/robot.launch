@@ -1,0 +1,22 @@
+<launch>
+  <arg name="model" default="$(find robot_gazebo)/urdf/robot_model.xacro"/>
+  <arg name="limited" default="false"/>
+  <arg name="paused" default="false"/>
+  <arg name="gui" default="true"/>
+  <arg name="sim" default="true"/>
+
+  <!-- startup simulated world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find robot_gazebo)/worlds/robot_gazebo.world"/>
+     <!-- more default parameters can be changed here -->
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn="false" output="screen" />
+
+  <!-- ros_control robot launch file -->
+  <include file="$(find robot_gazebo)/launch/robot_control.launch" />
+
+</launch>

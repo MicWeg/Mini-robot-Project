@@ -29,8 +29,8 @@ std_msgs::Float64 right_wheel;
 
 ros::Publisher pub_range( "/ultrasound", &range_msg);
 ros::Publisher pub_str("/move", &str_msg);
-ros::Publisher pub_lw("/mybot/leftWheel_effort_controller/command", &left_wheel);
-ros::Publisher pub_rw("/mybot/rightWheel_effort_controller/command", &right_wheel);
+ros::Publisher pub_lw("/robot/leftWheel_effort_controller/command", &left_wheel);
+ros::Publisher pub_rw("/robot/rightWheel_effort_controller/command", &right_wheel);
 
 char frameid[] = "/ultrasound";
 
